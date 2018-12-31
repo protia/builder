@@ -8,48 +8,30 @@
 # halt on error
 set -e
 
+# directories
+SRC_DIR=./src
+BUILD_DIR=./build
+TOOLS_DIR=./tools
+DISK_DIR=./disk
+
+# repositories
+REPOS="base command graphics protia.github.io systema"
+
 # make directories
 echo "(1/5) Initialize directories"
-
 mkdir -p ./src
-SRC_DIR=`realpath ./src`
-
 mkdir -p ./build
-BUILD_DIR=`realpath ./build`
-
 mkdir -p ./tools
-TOOLS_DIR=`realpath ./tools`
-
 mkdir -p ./disk
-DISK_DIR=`realpath ./disk`
 
 # fetch repositories from github
 echo "(2/5) Fetch Protia source code"
-
-echo "      -> base"
-if [ ! -d $SRC_DIR/base ]; then
-	git clone "https://github.com/protia/base" $SRC_DIR/base
-fi
-
-echo "      -> command"
-if [ ! -d $SRC_DIR/command ]; then
-	git clone "https://github.com/protia/command" $SRC_DIR/command
-fi
-
-echo "      -> graphics"
-if [ ! -d $SRC_DIR/graphics ]; then
-	git clone "https://github.com/protia/graphics" $SRC_DIR/graphics
-fi
-
-echo "      -> protia.github.io"
-if [ ! -d $SRC_DIR/protia.github.io ]; then
-	git clone "https://github.com/protia/protia.github.io" $SRC_DIR/protia.github.io
-fi
-
-echo "      -> systema"
-if [ ! -d $SRC_DIR/systema ]; then
-	git clone "https://github.com/protia/systema" $SRC_DIR/systema
-fi
+for repo in $REPOS; do
+	echo "      -> https://github.com/protia/$repo"
+	if [ ! -d $SRC_DIR/$repo ]; then
+		git clone -q "https://github.com/protia/$repo" $SRC_DIR/$repo
+	fi
+done
 
 # build tools required for compilation
 echo "(3/5) Build tools required for compilation"
