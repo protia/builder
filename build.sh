@@ -17,6 +17,9 @@ DISK_DIR=./disk
 # repositories
 REPOS="base command graphics protia.github.io systema"
 
+# tools
+TOOLS="systema"
+
 # make directories
 echo "(1/5) Initialize directories"
 mkdir -p ./src
@@ -35,6 +38,11 @@ done
 
 # build tools required for compilation
 echo "(3/5) Build tools required for compilation"
+for tool in $TOOLS; do
+	echo "      -> Building $tool for unix@x86.elf"
+	$SRC_DIR/$tool/build.sh $BUILD_DIR/$tool
+	$SRC_DIR/$tool/install.sh $TOOLS_DIR $BUILD_DIR/$tool
+done
 
 # compile source code
 echo "(4/5) Compile the source code"
